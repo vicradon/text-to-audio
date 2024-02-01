@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Text to Speech</title>
+    <style>
+      body {
+        font-family: Arial, sans-serif;
+        margin: 0;
+        padding: 0;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        height: 100vh;
+        background-color: #f4f4f4;
+      }
+
+      #container {
+        text-align: center;
+        width: 400px;
+      }
+
+      #text-input {
+        width: 100%;
+        padding: 10px;
+        margin-bottom: 10px;
+        box-sizing: border-box;
+      }
+
+      #generate-btn {
+        padding: 10px;
+        background-color: #4caf50;
+        color: white;
+        border: none;
+        cursor: pointer;
+      }
+
+      #audio-download {
+        display: none;
+        margin-top: 20px;
+      }
+    </style>
+  </head>
+  <body>
+    <form id="container">
+      <label for="text-input">Enter Text:</label>
+      <textarea required name="text-input" id="text-input" rows="4"></textarea>
+      <button type="submit" id="generate-btn">Generate Audio</button>
+      <audio controls id="audio-download">
+        Your browser does not support the audio element.
+      </audio>
+    </form>
+
+    <script>
+      const text = document.getElementById("text-input").value;
+
+      document
+        .getElementById("container")
+        .addEventListener("submit", (event) => {
+          event.preventDefault();
+          const textInput = event.target["text-input"].value;
+
+          const requestBody = new FormData();
+          requestBody.append("text_input", textInput);
+
+          fetch("/generate-audio", {
+            method: "POST",
+            body: requestBody,
+          })
+            .then((res) => res.json())
+            .then(() => alert("Request is currently being processed"))
+            .catch((error) => alert(error.message));
+        });
+    </script>
+  </body>
+</html>

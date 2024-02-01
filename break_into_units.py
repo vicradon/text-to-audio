@@ -1,6 +1,9 @@
 import json
 import re
 import nltk
+import random
+import math
+import os
 
 def break_into_sentences(text):
     nltk.download('punkt')
@@ -45,10 +48,16 @@ In a big-endian system, the most significant byte of a word resides at the small
 Big-endianness prevails in networking protocols, notably within the Internet protocol suite, where it is aptly termed network order, prioritizing the transmission of the most significant byte first. In contrast, little-endianness dominates processor architectures (such as x86, most ARM implementations, and base RISC-V implementations) and their associated memory. File formats may adopt either ordering, with some using a combination or including an indicator specifying the ordering used throughout the file.
 '''
 
-if __name__ == "__main__":
-  sanitized_text = sanitize_references(input_value)
+async def process_text(text):
+  sanitized_text = sanitize_references(text)
   sentences = break_into_sentences(sanitized_text)
 
-  with open('input.json', 'w') as input_json_file:
+  base_path = "/tmp/python-text-to-audio/" + str(math.floor(random.randint(1, 100000)))
+  os.makedirs(base_path, exist_ok=True)
+
+  json_file_path = f"{base_path}/input.json"
+
+  with open(json_file_path, 'w') as input_json_file:
     json.dump(sentences,  input_json_file)
   
+  return base_path

@@ -3,3 +3,4 @@ venv
 __pycache__
 .env
 input.json
+commands.sh
